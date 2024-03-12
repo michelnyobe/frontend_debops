@@ -24,22 +24,6 @@ function connectDB() {
     }
 
 }
-// Fonction pour créer la table users
-function creerTableUsers() {
-    $pdo = connectDB();
-    $sql = "
-    DROP TABLE IF EXISTS `users`;
-    CREATE TABLE IF NOT EXISTS `users` (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        nom VARCHAR(255),
-        prenom VARCHAR(255),
-        details TEXT
-    )";
-    $pdo->exec($sql);
-}
-
-// Appel de la fonction pour créer la table users
-creerTableUsers();
 // Fonction pour afficher tous les contacts
 function afficherContacts() {
     $pdo = connectDB();
