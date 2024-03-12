@@ -3,15 +3,23 @@
 require_once 'db_connect.php';
 
 // Afficher les contacts
-$users = afficherContacts();
+$contacts = afficherContacts();
 
 // Traitement des actions CRUD
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ajouter'])) {
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
-        $details = $_POST['details'];
+        $detail = $_POST['details'];
         ajouterContact($nom, $prenom, $details);
+        header('Location: index.php');
+        exit;
+    } elseif (isset($_POST['modifier'])) {
+        $id = $_POST['id'];
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $detail = $_POST['details'];
+        modifierContact($id, $nom, $prenom, $details);
         header('Location: index.php');
         exit;
     } elseif (isset($_POST['supprimer'])) {
@@ -34,24 +42,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>Liste des contacts</h1>
-    <?php if (empty($users)): ?>
+    <?php if (empty($contacts)): ?>
     <p>Aucun contact trouvé.</p>
     <?php else: ?>
     <table border="1">
         <tr>
             <th>Nom</th>
             <th>Prénom</th>
-            <th>Détails</th>
+            <th>Détail</th>
             <th>Actions</th>
         </tr>
-        <?php foreach ($users as $user): ?>
+        <?php foreach ($contacts as $contact): ?>
         <tr>
-            <td><?php echo $user['nom']; ?></td>
-            <td><?php echo $user['prenom']; ?></td>
-            <td><?php echo $user['details']; ?></td>
+            <td><?php echo $contact['nom']; ?></td>
+            <td><?php echo $contact['prenom']; ?></td>
+            <td><?php echo $contact['details']; ?></td>
             <td>
                 <form method="post" action="">
-                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>"
+                    <input type="hidden" name="id" value="<?php echo $contact['id']; ?>">
                     <button type="submit" name="supprimer">Supprimer</button>
                 </form>
             </td>
@@ -66,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" id="nom" name="nom"><br>
         <label for="prenom">Prénom:</label><br>
         <input type="text" id="prenom" name="prenom"><br>
-        <label for="details">Détails:</label><br>
+        <label for="details">Détail:</label><br>
         <textarea id="details" name="details"></textarea><br>
         <button type="submit" name="ajouter">Ajouter</button>
     </form>
