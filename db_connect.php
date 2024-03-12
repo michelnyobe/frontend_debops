@@ -4,49 +4,65 @@ require_once 'config.php';
 
 // Fonction de connexion à la base de données
 function connectDB() {
-    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASSWORD'), getenv('DB_NAME'));
-    if ($conn->connect_error) {
-        die("Connexion échouée : " . $conn->connect_error);
+    // Paramètres de connexion à la base de données
+    $host = getenv('DB_HOST'); // Adresse du serveur de base de données
+    $dbname = getenv('DB_NAME'); // Nom de votre base de données
+    $username = getenv('DB_USER'); // Nom d'utilisateur de la base de données
+    $password = getenv('DB_PASSWORD'); // Mot de passe de la base de données
+
+    try {
+        // Création d'une nouvelle instance de connexion PDO
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        
+        // Configurer PDO pour afficher les erreurs de requête SQL
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        return $pdo; // Retourner l'objet PDO
+    } catch (PDOException $e) {
+        // En cas d'erreur, afficher le message d'erreur
+        die("Erreur de connexion : " . $e->getMessage());
     }
-    return $conn;
+
 }
 
 // Fonction pour afficher tous les contacts
 function afficherContacts() {
-    $conn = connectDB();
+    $pdo = connectDB();
     $sql = "SELECT * FROM users";
-    $result = $conn->query($sql);
-    $contacts = array();
-    if ($result !== false && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $contacts[] = $row;
-        }
-    }
-    $conn->close();
-    return $contacts;
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Fonction pour ajouter un contact
-function ajouterContact($nom, $prenom, $detail) {
-    $conn = connectDB();
-    $sql = "INSERT INTO users (nom, prenom, details) VALUES ('$nom', '$prenom', '$detail')";
-    $conn->query($sql);
-    $conn->close();
+function ajouterContact($nom, $prenom, $details) {
+    $pdo = connectDB();
+    $sql = "INSERT INTO users (nom, prenom, details) VALUES (:nom, :prenom, :details)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+        ':nom' => $nom,
+        ':prenom' => $prenom,
+        ':details' => $details
+    ));
 }
 
 // Fonction pour modifier un contact
-function modifierContact($id, $nom, $prenom, $detail) {
-    $conn = connectDB();
-    $sql = "UPDATE users SET nom='$nom', prenom='$prenom', details='$detail' WHERE id=$id";
-    $conn->query($sql);
-    $conn->close();
+function modifierContact($id, $nom, $prenom, $details) {
+    $pdo = connectDB();
+    $sql = "UPDATE users SET nom=:nom, prenom=:prenom, details=:details WHERE id=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+        ':nom' => $nom,
+        ':prenom' => $prenom,
+        ':details' => $details,
+        ':id' => $id
+    ));
 }
 
 // Fonction pour supprimer un contact
 function supprimerContact($id) {
-    $conn = connectDB();
-    $sql = "DELETE FROM users WHERE id=$id";
-    $conn->query($sql);
-    $conn->close();
+    $pdo = connectDB();
+    $sql = "DELETE FROM users WHERE id=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(':id' => $id));
 }
 ?>
