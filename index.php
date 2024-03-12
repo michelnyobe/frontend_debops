@@ -3,7 +3,7 @@
 require_once 'db_connect.php';
 
 // Afficher les contacts
-$contacts = afficherContacts();
+$users = afficherContacts();
 
 // Traitement des actions CRUD
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ajouterContact($nom, $prenom, $details);
         header('Location: index.php');
         exit;
-    } elseif (isset($_POST['supprimer'])) {
+    } else (isset($_POST['supprimer'])) {
         $id = $_POST['id'];
         supprimerContact($id);
         header('Location: index.php');
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>Liste des contacts</h1>
-    <?php if (empty($contacts)): ?>
+    <?php if (empty($users)): ?>
     <p>Aucun contact trouvé.</p>
     <?php else: ?>
     <table border="1">
@@ -44,14 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Détails</th>
             <th>Actions</th>
         </tr>
-        <?php foreach ($contacts as $contact): ?>
+        <?php foreach ($users as $user): ?>
         <tr>
-            <td><?php echo $contact['nom']; ?></td>
-            <td><?php echo $contact['prenom']; ?></td>
-            <td><?php echo $contact['details']; ?></td>
+            <td><?php echo $user['nom']; ?></td>
+            <td><?php echo $user['prenom']; ?></td>
+            <td><?php echo $user['details']; ?></td>
             <td>
                 <form method="post" action="">
-                    <input type="hidden" name="id" value="<?php echo $contact['id']; ?>"
+                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>"
                     <button type="submit" name="supprimer">Supprimer</button>
                 </form>
             </td>
