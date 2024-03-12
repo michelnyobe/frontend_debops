@@ -51,8 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <td><?php echo $contact['details']; ?></td>
             <td>
                 <form method="post" action="">
-                    <input type="hidden" name="id" value="<?php echo $contact['id']; ?>">
-                    <button type="submit" name="modifier">Modifier</button>
+                    <input type="hidden" name="id" value="<?php echo $contact['id']; ?>"
                     <button type="submit" name="supprimer">Supprimer</button>
                 </form>
             </td>
