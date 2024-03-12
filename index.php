@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ajouter'])) {
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
-        $detail = $_POST['details'];
+        $details = $_POST['details'];
         ajouterContact($nom, $prenom, $details);
         header('Location: index.php');
         exit;
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="prenom">Prénom:</label><br>
         <input type="text" id="prenom" name="prenom"><br>
         <label for="details">Détail:</label><br>
-        <textarea id="details" name="details"></textarea><br>
+        <textarea id="details" name="details" rows="4" cols="50"></textarea><br><br>
         <button type="submit" name="ajouter">Ajouter</button>
     </form>
 </body>
