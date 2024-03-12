@@ -10,16 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ajouter'])) {
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
-        $detail = $_POST['detail'];
-        ajouterContact($nom, $prenom, $detail);
+        $details = $_POST['details'];
+        ajouterContact($nom, $prenom, $details);
         header('Location: index.php');
         exit;
     } elseif (isset($_POST['modifier'])) {
         $id = $_POST['id'];
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
-        $detail = $_POST['detail'];
-        modifierContact($id, $nom, $prenom, $detail);
+        $details = $_POST['details'];
+        modifierContact($id, $nom, $prenom, $details);
         header('Location: index.php');
         exit;
     } elseif (isset($_POST['supprimer'])) {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tr>
             <th>Nom</th>
             <th>Prénom</th>
-            <th>Détail</th>
+            <th>Détails</th>
             <th>Actions</th>
         </tr>
         <?php foreach ($contacts as $contact): ?>
@@ -75,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" id="nom" name="nom"><br>
         <label for="prenom">Prénom:</label><br>
         <input type="text" id="prenom" name="prenom"><br>
-        <label for="detail">Détail:</label><br>
-        <textarea id="detail" name="detail"></textarea><br>
+        <label for="details">Détails:</label><br>
+        <textarea id="details" name="details"></textarea><br>
         <button type="submit" name="ajouter">Ajouter</button>
     </form>
 </body>
