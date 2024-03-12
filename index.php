@@ -14,14 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ajouterContact($nom, $prenom, $details);
         header('Location: index.php');
         exit;
-    } elseif (isset($_POST['modifier'])) {
-        $id = $_POST['id'];
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $details = $_POST['details'];
-        modifierContact($id, $nom, $prenom, $details);
-        header('Location: index.php');
-        exit;
     } elseif (isset($_POST['supprimer'])) {
         $id = $_POST['id'];
         supprimerContact($id);
